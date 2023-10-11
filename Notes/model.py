@@ -25,6 +25,10 @@ class Note:
         """ """
         pass
 
+    def del_note(self, del_path: str):
+        """ """
+        os.remove(del_path)
+
     def save_note(self):
         """ """
         self.path_note += f'{self.note_data.get("title", None)}.json'
