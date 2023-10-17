@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import json
 import text
@@ -27,9 +28,14 @@ def show_note(path: str):
 
 def show_list_notes(path: str):
     """ """
-    all_notes = [files[2] for files in os.walk(path)][0]
+    all_notes_name, temp_list = os.listdir(path=path), []
+    for item in all_notes_name:
+        with open(path+item) as r:
+            temp_data = json.load(r)
+            temp_list.append((temp_data['title'], datetime.strptime(temp_data['date'], '%Y-%m-%d %H:%M').timestamp()))
+    temp_sort = sorted(temp_list, key=lambda x: x[1])
     (
-        [print(f'{title[0]}. {title[1].replace(".json", "")}') for title in enumerate(all_notes, start=1)]
+        [print(f'{item[0]}. {item[1][0]} {datetime.fromtimestamp(item[1][1]).strftime('%Y-%m-%d %H:%M')}') for item in enumerate(temp_sort, start=1)]
     )
 
 
@@ -44,9 +50,9 @@ def select_option():
             print(text.main_menu_input_error)
 
 
-def new_note(path_new: str) -> list:
+def new_note(path_new: str):
     """ """
-    temp_data, all_notes = [], [files[2] for files in os.walk(path_new)][0]
+    temp_data, all_notes = [], os.listdir(path=path_new)
     for item in text.fields_new_note:
         while True:
             data_in = check_data(input(item))

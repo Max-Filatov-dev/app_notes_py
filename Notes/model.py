@@ -13,7 +13,7 @@ class Note:
 
     def add_note(self, data: list):
         """ """
-        all_notes, cur_index = [files[2] for files in os.walk(self.path_note)][0], 1
+        all_notes, cur_index = os.listdir(path=self.path_note), 1
         for item in all_notes:
             with open(self.path_note + item) as r:
                 data_nt = json.load(r)
