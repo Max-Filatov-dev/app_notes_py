@@ -40,6 +40,5 @@ def start():
                     print(text.del_note)
                     break
             case 6:
-                nt.add_note(data=[])
                 print(text.exit_msg)
                 break
