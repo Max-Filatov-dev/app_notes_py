@@ -13,7 +13,12 @@ class Note:
 
     def add_note(self, data: list):
         """ """
-        cur_index = len([files[2] for files in os.walk(self.path_note)][0]) + 1
+        all_notes, cur_index = [files[2] for files in os.walk(self.path_note)][0], 1
+        for item in all_notes:
+            with open(self.path_note + item) as r:
+                data_nt = json.load(r)
+            cur_index += 1 if cur_index == data_nt['id'] else 0
+
         self.note_data.update({
             'id': cur_index,
             'title': data[0],
@@ -21,9 +26,14 @@ class Note:
             'date': datetime.now().strftime("%Y-%m-%d %H:%M")
         })
 
-    def edit_note(self, path_edit: str, data_edit: list):
+    def edit_note(self, path_edit: str, data_edit: str):
         """ """
-        pass
+        with open(path_edit) as rd:
+            edit_data = json.load(rd)
+        edit_data['content'] = data_edit
+
+        with open(path_edit, 'w', encoding='utf-8') as wr:
+            json.dump(edit_data, wr, indent=4)
 
     def del_note(self, del_path: str):
         """ """
